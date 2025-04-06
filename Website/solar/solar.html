@@ -8,14 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="solar.css">
+    <!-- Add Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <!-- Add other libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"></script>
 </head>
 
 <body>
     <nav class="sidebar">
         <ul>
             <a href="../overview/overview.html" class="nav-item">
-                <i class="fas fa-home"></i>
-                Overview
+                <i class="fa-solid fa-circle-user"></i>
+                Account
             </a>
             <a href="../consumption/consumption.html" class="nav-item">
                 <i class="fas fa-chart-line"></i>
@@ -29,6 +36,10 @@
                 <i class="fas fa-file-invoice-dollar"></i>
                 Billing
             </a>
+            <a href="../About us/about us.html" class="nav-item">
+                <i class="fa-solid fa-comment"></i>
+                About us
+            </a>
             <a href="../logout/logout.html" class="nav-item">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Logout
@@ -40,10 +51,24 @@
             <i class="fas fa-sun"></i>
             <h2>Solar Production</h2>
         </div>
+
         <div class="chart-container">
-            <p>Solar energy generation statistics</p>
+            <canvas id="solarChart"></canvas>
         </div>
     </div>
+
+    <div class="metric-card" id="current">
+        <div class="metric-header">
+            <i class="fas fa-bolt"></i>
+            <h2>Solar Panel Current</h2>
+        </div>
+        <div class="chart-container">
+            <canvas id="currentChart"></canvas>
+            <div id="lastUpdate"></div>
+        </div>
+    </div>
+
+    <script src="solar.js"></script>
 </body>
 
 </html>
