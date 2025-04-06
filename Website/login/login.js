@@ -25,6 +25,12 @@ var firebaseConfig = {
       .then((userCredential) => {
         // Successfully signed in
         var user = userCredential.user;
+        
+        // Retrieve the UID
+        const uid = user.uid;
+        // Store the UID in localStorage
+        localStorage.setItem('userUID', uid);
+
         document.getElementById('login').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
         window.location.href = '../overview/overview.html'; // If you want to redirect
@@ -33,7 +39,7 @@ var firebaseConfig = {
         alert('Invalid Email or Password. Please try again.');
       });
   }
-
+  
   const togglePassword = document.querySelector('#togglePassword');
   const password = document.querySelector('#password');
   
@@ -43,7 +49,7 @@ var firebaseConfig = {
       this.classList.toggle('fa-eye-slash');
       this.classList.toggle('fa-eye');
   });
-
+  
   const reset = document.getElementById("resetpass");
   reset.addEventListener("click", passwordset);
   
