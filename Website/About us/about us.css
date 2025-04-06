@@ -1,0 +1,215 @@
+body {
+    font-family: sans-serif;
+    margin: 10px;
+}
+
+:root {
+    --primary-color: #2F4F4F;
+    --secondary-color: #3CB371;
+    --accent-color: #20B2AA;
+    --background: #F8F9FA;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--background);
+    min-height: 100vh;
+}
+
+.dashboard {
+    display: none;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 8px;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.nav-item i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-item:hover {
+    background: var(--background);
+    color: var(--secondary-color);
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 2rem;
+}
+
+.metric-card {
+    background: white;
+    margin-left: 250px;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.metric-header i {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-right: 1rem;
+}
+
+/* Content Section */
+.company-content {
+    padding: 2.5rem;
+    display: grid;
+    gap: 2rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #20B2AA;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #bfdbfe;
+}
+
+/* Team Section */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.team-group {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+}
+
+.team-role {
+    text-align:center;
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.job {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.job::before {
+    content: "▹";
+    color: #20B2AA;
+}
+
+.team-member {
+    display: inline-flex;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.team-members {
+    display: flex;
+    gap: 8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.team-member::before {
+    content: "▹";
+    color: #20B2AA;
+}
+
+/* Contact Section */
+.contact-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f1f5f9;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.contact-item:hover {
+    background: #e2e8f0;
+    transform: translateX(0.5rem);
+}
+
+.contact-icon {
+    color: #20B2AA;
+    font-size: 1.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .company-header {
+        padding: 2rem;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .company-content {
+        padding: 1.5rem;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .company-title {
+        font-size: 1.75rem;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
