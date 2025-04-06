@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Energy Analytics - Overview</title>
+    <title>Energy Analytics - Account Info.</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-functions-compat.js"></script>
     <link rel="stylesheet" href="overview.css">
 </head>
 
@@ -14,8 +18,8 @@
     <nav class="sidebar">
         <ul>
             <a href="../overview/overview.html" class="nav-item">
-                <i class="fas fa-home"></i>
-                Overview
+                <i class="fa-solid fa-circle-user"></i>
+                Account
             </a>
             <a href="../consumption/consumption.html" class="nav-item">
                 <i class="fas fa-chart-line"></i>
@@ -29,6 +33,10 @@
                 <i class="fas fa-file-invoice-dollar"></i>
                 Billing
             </a>
+            <a href="../About us/about us.html" class="nav-item">
+                <i class="fa-solid fa-comment"></i>
+                About us
+            </a>
             <a href="../logout/logout.html" class="nav-item">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Logout
@@ -38,13 +46,42 @@
 
     <div class="metric-card" id="overview">
         <div class="metric-header">
-            <i class="fas fa-tachometer-alt"></i>
-            <h2>Energy Overview</h2>
+            <i class="fa-solid fa-user"></i>
+            <h2>Account Info.</h2>
         </div>
         <div class="chart-container">
-            <p>Real-time energy consumption metrics</p>
+            <div id="welcome-message" class="welcome-container"></div>
+            <br>
+            <h2 class="section-title">Contact Details</h2>
+            <div class="contact-info-section">
+                <div class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div id="Email_address"></div>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div id="Phone_number"></div>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-map-marker-alt"></i>
+                    <div id="Home_address"></div>
+                </div>
+            </div>
         </div>
     </div>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB-MtbsHu9_dEGQkEo3Y46rxgIeg5vhfR8",
+            authDomain: "fir-a5ed4.firebaseapp.com",
+            databaseURL: "https://fir-a5ed4-default-rtdb.firebaseio.com",
+            projectId: "fir-a5ed4",
+            storageBucket: "fir-a5ed4.firebasestorage.app",
+            messagingSenderId: "30349602179",
+            appId: "1:30349602179:web:6f2ea8b2efaf20a74a9ab6"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="overview.js"></script>
 </body>
 
 </html>

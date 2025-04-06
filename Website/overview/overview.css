@@ -96,3 +96,117 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    opacity: 0;
+    animation: slideIn 0.5s ease-out forwards;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.contact-item i {
+    color: #667eea;
+    font-size: 1.2rem;
+    min-width: 30px;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.contact-item div {
+    white-space: nowrap; /* Keep text in single line */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis for long text */
+    flex-grow: 1; /* Take available space */
+}
+
+.metric-header i {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.chart-container {
+    padding: 2rem;
+}
+
+.welcome-container {
+    background: rgba(245, 245, 245, 0.9);
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.welcome-container:hover {
+    transform: translateX(10px);
+    border-left-color: #667eea;
+    box-shadow: 3px 3px 15px rgba(0,0,0,0.05);
+}
+
+#welcome-message {
+    font-size: 1.2rem;
+    color: #2d3748;
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+}
+
+.contact-info-section {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    opacity: 0;
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+.contact-item i {
+    color: #667eea;
+    font-size: 1.2rem;
+    min-width: 30px;
+}
+
+.contact-item:nth-child(1) { animation-delay: 0.2s; }
+.contact-item:nth-child(2) { animation-delay: 0.4s; }
+.contact-item:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes cardEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
