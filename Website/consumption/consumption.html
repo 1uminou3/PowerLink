@@ -8,14 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="consumption.css">
+    <!-- Update Firebase SDK to version 9 -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <!-- Keep these after Firebase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"></script>
 </head>
 
 <body>
     <nav class="sidebar">
         <ul>
             <a href="../overview/overview.html" class="nav-item">
-                <i class="fas fa-home"></i>
-                Overview
+                <i class="fa-solid fa-circle-user"></i>
+                Account
             </a>
             <a href="consumption.html" class="nav-item">
                 <i class="fas fa-chart-line"></i>
@@ -29,6 +36,10 @@
                 <i class="fas fa-file-invoice-dollar"></i>
                 Billing
             </a>
+            <a href="../About us/about us.html" class="nav-item">
+                <i class="fa-solid fa-comment"></i>
+                About us
+            </a>
             <a href="../logout/logout.html" class="nav-item">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Logout
@@ -41,9 +52,23 @@
             <h2>Detailed Consumption</h2>
         </div>
         <div class="chart-container">
-            <p>Historical consumption data analysis</p>
+            <canvas id="consumptionChart"></canvas>
         </div>
     </div>
+
+    <div class="metric-card" id="current">
+        <div class="metric-header">
+            <i class="fas fa-bolt"></i>
+            <h2>Current Measurement</h2>
+        </div>
+        <div class="chart-container">
+            <canvas id="currentChart"></canvas>
+            <div id="lastUpdate"></div>
+        </div>
+    </div>
+
+    <!-- Add ThingSpeak script -->
+    <script src="consumption.js"></script>
 </body>
 
 </html>
