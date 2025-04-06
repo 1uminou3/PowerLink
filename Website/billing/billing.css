@@ -175,3 +175,117 @@ th {
 tr:hover {
     background-color: #f1f1f1;
 }
+
+.billing-details {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.billing-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.billing-row:last-child {
+    border-bottom: none;
+}
+
+.billing-info {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.billing-row.total {
+    font-weight: 500;
+    color: #2F4F4F;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.billing-row.grand-total {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #2F4F4F;
+    background: #e8f5e9;
+    padding: 1.5rem 1rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+#payment-history {
+    width: 100%;
+}
+
+.card {
+    margin: 2rem auto;
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    background: white;
+}
+
+.card img {
+    width: 300px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 1.5rem;
+}
+
+.card p {
+    font-weight: 600;
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    color: #2F4F4F;
+}
+
+.card p.price {
+    font-size: 2rem;
+    color: #3CB371;
+    margin: 1rem 0 2rem 0;
+}
+
+#paypal-button {
+    margin-top: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #2F4F4F;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background: #f8f9fa;
+}

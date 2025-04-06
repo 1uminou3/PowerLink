@@ -8,14 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="billing.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-functions-compat.js"></script>
 </head>
 
 <body>
     <nav class="sidebar">
         <ul>
             <a href="../overview/overview.html" class="nav-item">
-                <i class="fas fa-home"></i>
-                Overview
+                <i class="fa-solid fa-circle-user"></i>
+                Account
             </a>
             <a href="../consumption/consumption.html" class="nav-item">
                 <i class="fas fa-chart-line"></i>
@@ -29,6 +34,10 @@
                 <i class="fas fa-file-invoice-dollar"></i>
                 Billing
             </a>
+            <a href="../About us/about us.html" class="nav-item">
+                <i class="fa-solid fa-comment"></i>
+                About us
+            </a>
             <a href="../logout/logout.html" class="nav-item">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Logout
@@ -41,64 +50,114 @@
             <h2>Billing & Payments</h2>
         </div>
         <div class="chart-container">
-            <!--<p>Payment history and upcoming bills</p>-->
-            <br>
             <section id="fee">
-
-
                 <h2>Upcoming Bills</h2>
                 <hr>
                 <br>
-                <p>Electricity Usage (HK$)</p>
-                <p class="price">$100</p>
-                <p>Solar Energy Usage (HK$)</p>
-                <p class="price">$50.00</p>
-                <p>Total (HK$)</p>
-                <p class="price">$100 - $50 = $50.00</p>
+                <div class="billing-details">
+                    <div class="billing-row">
+                        <span>Electricity Consumption</span>
+                        <div class="billing-info">
+                            <span id="consumption-amount">Loading...</span>
+                            <span>kWh</span>
+                        </div>
+                    </div>
+                    <div class="billing-row">
+                        <span>Rate per kWh</span>
+                        <div class="billing-info">
+                            <span>HK$</span>
+                            <span>1.20</span>
+                        </div>
+                    </div>
+                    <div class="billing-row total">
+                        <span>Electricity Usage Cost</span>
+                        <div class="billing-info">
+                            <span>HK$</span>
+                            <span id="electricity-cost">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="billing-row">
+                        <span>Solar Energy Generated</span>
+                        <div class="billing-info">
+                            <span id="solar-amount">Loading...</span>
+                            <span>kWh</span>
+                        </div>
+                    </div>
+                    <div class="billing-row">
+                        <span>Solar Credit per kWh</span>
+                        <div class="billing-info">
+                            <span>HK$</span>
+                            <span>0.80</span>
+                        </div>
+                    </div>
+                    <div class="billing-row total">
+                        <span>Solar Credit</span>
+                        <div class="billing-info">
+                            <span>HK$</span>
+                            <span id="solar-credit">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="billing-row grand-total">
+                        <span>Total Amount Due</span>
+                        <div class="billing-info">
+                            <span>HK$</span>
+                            <span id="total-amount">Loading...</span>
+                        </div>
+                    </div>
+                </div>
 
-                <br>
                 <div class="card">
-                    <img src="../img/billingicon.png">
-                    <p>Total</p>
-                    <p class="price">$50.00</p>
+                    <img src="../img/billingicon.png" alt="Billing Icon">
+                    <p>Pay Now</p>
+                    <p class="price" id="paypal-amount">HK$ Loading...</p>
                     <div id="paypal-button"></div>
-                    <script src="https://www.paypal.com/sdk/js?client-id=Adzc5OQXE8a5vMp7LyHmYbvoKHHNaofP7LT-Yqu49YBUjugCt_6Jsof1j7gFu8RS5bIlo6FZtnXJjVLW&currency=HKD"></script>
-                    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-                    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-functions.js"></script>
-                    <script>
-                        const firebaseConfig = {
-                            // Your firebase config here ! 😃
-                        };
-                        firebase.initializeApp(firebaseConfig);
-                    </script>
+                </div>
             </section>
-            <h2>Payment History</h2>
-            <hr>
-            <br>
-            <br>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2024-12-15</td>
-                        <td>$100.00</td>
-                        <td>Completed</td>
-                    </tr>
-                    <tr>
-                        <td>2025-01-10</td>
-                        <td>$50.00</td>
-                        <td>Pending</td>
-                    </tr>
-                </tbody>
-            </table>
+            
+            <section id="history">
+                <h2>Payment History</h2>
+                <hr>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Consumption (kWh)</th>
+                            <th>Solar Credit (kWh)</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payment-history">
+                        <tr>
+                            <td colspan="5">Loading payment history...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
         </div>
     </div>
+
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=Adzc5OQXE8a5vMp7LyHmYbvoKHHNaofP7LT-Yqu49YBUjugCt_6Jsof1j7gFu8RS5bIlo6FZtnXJjVLW&currency=HKD"></script>
+    
+    <!-- Initialize Firebase -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB-MtbsHu9_dEGQkEo3Y46rxgIeg5vhfR8",
+            authDomain: "fir-a5ed4.firebaseapp.com",
+            databaseURL: "https://fir-a5ed4-default-rtdb.firebaseio.com",
+            projectId: "fir-a5ed4",
+            storageBucket: "fir-a5ed4.firebasestorage.app",
+            messagingSenderId: "30349602179",
+            appId: "1:30349602179:web:6f2ea8b2efaf20a74a9ab6"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <!-- Custom JS -->
     <script src="billing.js"></script>
 </body>
 

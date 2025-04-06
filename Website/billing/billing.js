@@ -1,12 +1,180 @@
-const paypalCreateOrder = window.firebase.functions().httpsCallable("paypalCreateOrder");
-const paypalHandleOrder = window.firebase.functions().httpsCallable("paypalHandleOrder");
+// Initialize Firebase
+const db = firebase.database();
 
-window.paypal.Buttons({
-  createOrder: (data, actions) => paypalCreateOrder().then(response => response.data.id),
+// Rate constants
+const ELECTRICITY_RATE = 1.20; // HK$ per kWh
+const SOLAR_CREDIT_RATE = 0.80; // HK$ per kWh
 
-  onApprove: (data, actions) => {
-    paypalHandleOrder({ orderId: data.orderID })
-    alert("THANKS FOR ORDERING!")
-  }
+// Formatting functions
+const formatCurrency = (amount) => {
+    if (Math.abs(amount) < 0.001) return "0.00";
+    const formatted = parseFloat(amount).toFixed(2);
+    return formatted === "-0.00" ? "0.00" : formatted;
+};
 
-}).render('#paypal-button')
+const formatDate = (timestamp) => {
+    return new Date(timestamp * 1000).toLocaleDateString('en-HK');
+};
+
+// Update billing display
+function updateBillingDisplay(consumptionAmount, solarAmount) {
+    const electricityCost = consumptionAmount * ELECTRICITY_RATE;
+    const solarCredit = solarAmount * SOLAR_CREDIT_RATE;
+    const totalAmount = electricityCost - solarCredit;
+
+    // Update DOM elements
+    document.getElementById('consumption-amount').textContent = formatCurrency(consumptionAmount);
+    document.getElementById('electricity-cost').textContent = formatCurrency(electricityCost);
+    document.getElementById('solar-amount').textContent = formatCurrency(solarAmount);
+    document.getElementById('solar-credit').textContent = formatCurrency(solarCredit);
+    document.getElementById('total-amount').textContent = formatCurrency(totalAmount);
+    document.getElementById('paypal-amount').textContent = `HK$ ${formatCurrency(totalAmount)}`;
+}
+
+// Fetch latest readings from Firebase
+async function fetchLatestReadings(userId) {
+    try {
+        // Directly reference the "value" node under each path
+        const [powerUsageSnap, chargeAmountSnap] = await Promise.all([
+            db.ref(`users/${userId}/data/Power_Usage_(Wh)/value`).once('value'),
+            db.ref(`users/${userId}/data/Charge_Amount_(Wh)/value`).once('value')
+        ]);
+
+        // Extract values directly from the snapshots
+        const powerUsage = powerUsageSnap.val()/1000 || 0;
+        const chargeAmount = chargeAmountSnap.val()/1000 || 0;
+
+        updateBillingDisplay(powerUsage, chargeAmount);
+
+        return {
+            consumption: powerUsage,
+            solar: chargeAmount,
+            total: (powerUsage * ELECTRICITY_RATE) - (chargeAmount * SOLAR_CREDIT_RATE)
+        };
+    } catch (error) {
+        console.error('Fetch error:', error);
+        alert('Error loading billing data');
+        throw error;
+    }
+}
+
+// Update payment history
+function updatePaymentHistory(userId) {
+    const historyRef = db.ref(`users/${userId}/payment_history`);
+    historyRef.orderByChild('timestamp').limitToLast(5).on('value', snap => {
+        const tbody = document.getElementById('payment-history');
+        let html = '';
+
+        if (!snap.exists()) {
+            html = '<tr><td colspan="5">No payments found</td></tr>';
+        } else {
+            const payments = [];
+            snap.forEach(child => {
+                payments.push({ key: child.key, ...child.val() });
+            });
+            payments.sort((a, b) => b.timestamp - a.timestamp);
+
+            payments.forEach(payment => {
+                html += `
+                    <tr>
+                        <td>${formatDate(payment.timestamp)}</td>
+                        <td>${formatCurrency(payment.consumption)} kWh</td>
+                        <td>${formatCurrency(payment.solar)} kWh</td>
+                        <td>HK$ ${formatCurrency(payment.amount)}</td>
+                        <td>${payment.status}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        tbody.innerHTML = html; // Update once after processing all payments
+    });
+}
+
+// Initialize PayPal button
+async function initializePayPal(userId) {
+    try {
+        const { total } = await fetchLatestReadings(userId);
+        const amount = Math.abs(total) < 0.001 ? 0 : total;
+
+        paypal.Buttons({
+            style: {
+                color: 'gold',
+                shape: 'pill',
+                label: 'pay',
+                height: 40
+            },
+
+            createOrder: (data, actions) => {
+                if (amount <= 0) {
+                    alert('No payment required - credit balance available');
+                    return Promise.reject('Zero amount');
+                }
+
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount.toFixed(2),
+                            currency_code: 'HKD'
+                        }
+                    }]
+                });
+            },
+
+            onApprove: (data, actions) => actions.order.capture()
+                .then(async details => {
+                    // Save payment to Firebase
+                    const paymentData = {
+                        timestamp: Date.now() / 1000,
+                        amount: amount,
+                        consumption: (await fetchLatestReadings(userId)).consumption,
+                        solar: (await fetchLatestReadings(userId)).solar,
+                        status: 'Completed',
+                        transaction_id: details.id
+                    };
+
+                    await db.ref(`users/${userId}/payment_history`).push().set(paymentData);
+                    alert(`Payment of HK$${amount.toFixed(2)} successful!`);
+                })
+                .catch(err => {
+                    console.error('Payment error:', err);
+                    alert('Payment failed: ' + err.message);
+                }),
+
+            onError: err => {
+                console.error('PayPal error:', err);
+                alert('Payment system error: ' + err.message);
+            }
+
+        }).render('#paypal-button');
+
+    } catch (error) {
+        console.error('PayPal init error:', error);
+        document.getElementById('paypal-button').innerHTML = 
+            '<p class="error">Payment system unavailable. Please try again later.</p>';
+    }
+}
+
+// Initialize application
+document.addEventListener('DOMContentLoaded', () => {
+    firebase.auth().onAuthStateChanged(async user => {
+        if (!user) return window.location.href = '../login/PowerLink.html';
+
+        try {
+            console.log('Initializing for user:', user.uid);
+            await initializePayPal(user.uid);
+            updatePaymentHistory(user.uid);
+            
+            // Refresh data every 5 minutes
+            setInterval(async () => {
+                await fetchLatestReadings(user.uid);
+                document.getElementById('paypal-button').innerHTML = '';
+                await initializePayPal(user.uid);
+            }, 300000);
+
+        } catch (error) {
+            console.error('App init error:', error);
+            alert('Application initialization failed. Please refresh.');
+        }
+    });
+});
