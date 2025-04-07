@@ -67,8 +67,8 @@ async function fetchLatestReadings(userId) {
         });
 
         // Convert Wh to kWh
-        powerUsageAmount = powerUsageAmount / 1000;
-        chargeAmount = chargeAmount / 1000;
+        //powerUsageAmount = powerUsageAmount / 1000;
+        //chargeAmount = chargeAmount / 1000;
         
         // Update the display
         updateBillingDisplay(powerUsageAmount, chargeAmount);
