@@ -1,0 +1,134 @@
+:root {
+    --primary-color: #2F4F4F;
+    --secondary-color: #3CB371;
+    --accent-color: #20B2AA;
+    --background: #F8F9FA;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--background);
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 8px;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.nav-item i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: var(--background);
+    color: var(--secondary-color);
+}
+
+.metric-card {
+    background: white;
+    margin-left: 250px;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin: 2rem;
+    margin-left: 270px;
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.metric-header i {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-right: 1rem;
+}
+
+.chart-container {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.rfid-records {
+    margin-top: 1rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.rfid-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+.rfid-table th,
+.rfid-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.rfid-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: var(--primary-color);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.rfid-table tr:last-child td {
+    border-bottom: none;
+}
+
+.rfid-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.status-authorized {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.status-unauthorized {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+    .metric-card {
+        margin: 1rem;
+        margin-left: 270px;
+    }
+} 
