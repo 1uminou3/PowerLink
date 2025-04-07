@@ -34,27 +34,46 @@ function updateBillingDisplay(consumptionAmount, solarAmount) {
 // Fetch latest readings from Firebase
 async function fetchLatestReadings(userId) {
     try {
-        // Directly reference the "value" node under each path
-        const [powerUsageSnap, chargeAmountSnap] = await Promise.all([
-            db.ref(`users/${userId}/data/Power_Usage_(Wh)/value`).once('value'),
-            db.ref(`users/${userId}/data/Charge_Amount_(Wh)/value`).once('value')
+        // Get latest power usage and charge amount
+        const powerUsageRef = db.ref(`users/${userId}/data/Power_Usage_(Wh)`);
+        const chargeAmountRef = db.ref(`users/${userId}/data/Charge_Amount_(Wh)`);
+        
+        // Get the latest readings
+        const [powerUsageSnapshot, chargeAmountSnapshot] = await Promise.all([
+            powerUsageRef.orderByChild('timestamp').limitToLast(1).once('value'),
+            chargeAmountRef.orderByChild('timestamp').limitToLast(1).once('value')
         ]);
 
-        // Extract values directly from the snapshots
-        const powerUsage = powerUsageSnap.val()/1000 || 0;
-        const chargeAmount = chargeAmountSnap.val()/1000 || 0;
+        let powerUsageAmount = 0;
+        let chargeAmount = 0;
 
-        updateBillingDisplay(powerUsage, chargeAmount);
+        powerUsageSnapshot.forEach((child) => {
+            powerUsageAmount = child.val().value || 0;
+        });
 
+        chargeAmountSnapshot.forEach((child) => {
+            chargeAmount = child.val().value || 0;
+        });
+
+        // Convert Wh to kWh
+        powerUsageAmount = powerUsageAmount / 1000;
+        chargeAmount = chargeAmount / 1000;
+        
+        // Update the display
+        updateBillingDisplay(powerUsageAmount, chargeAmount);
+        
+        // Calculate costs for return value
+        const electricityCost = powerUsageAmount * ELECTRICITY_RATE;
+        const solarCredit = chargeAmount * SOLAR_CREDIT_RATE;
+        
         return {
-            consumption: powerUsage,
+            consumption: powerUsageAmount,
             solar: chargeAmount,
-            total: (powerUsage * ELECTRICITY_RATE) - (chargeAmount * SOLAR_CREDIT_RATE)
+            total: electricityCost - solarCredit
         };
     } catch (error) {
-        console.error('Fetch error:', error);
-        alert('Error loading billing data');
-        throw error;
+        console.error('Error fetching readings:', error);
+        alert('Error loading billing data. Please try again later.');
     }
 }
 
