@@ -18,17 +18,28 @@ const formatDate = (timestamp) => {
 
 // Update billing display
 function updateBillingDisplay(consumptionAmount, solarAmount) {
-    const electricityCost = consumptionAmount * ELECTRICITY_RATE;
-    const solarCredit = solarAmount * SOLAR_CREDIT_RATE;
-    const totalAmount = electricityCost - solarCredit;
-
-    // Update DOM elements
+    // Update consumption details
     document.getElementById('consumption-amount').textContent = formatCurrency(consumptionAmount);
+    const electricityCost = consumptionAmount * ELECTRICITY_RATE;
     document.getElementById('electricity-cost').textContent = formatCurrency(electricityCost);
+
+    // Update solar details
     document.getElementById('solar-amount').textContent = formatCurrency(solarAmount);
+    const solarCredit = solarAmount * SOLAR_CREDIT_RATE;
     document.getElementById('solar-credit').textContent = formatCurrency(solarCredit);
-    document.getElementById('total-amount').textContent = formatCurrency(totalAmount);
-    document.getElementById('paypal-amount').textContent = `HK$ ${formatCurrency(totalAmount)}`;
+
+    // Calculate total amount
+    const totalAmount = electricityCost - solarCredit;
+    
+    // Handle the display of total amount
+    // If the absolute value is very small (effectively zero), display as 0.00
+    if (Math.abs(totalAmount) < 0.001) {
+        document.getElementById('total-amount').textContent = "0.00";
+        document.getElementById('paypal-amount').textContent = "HK$ 0.00";
+    } else {
+        document.getElementById('total-amount').textContent = formatCurrency(totalAmount);
+        document.getElementById('paypal-amount').textContent = `HK$ ${formatCurrency(totalAmount)}`;
+    }
 }
 
 // Fetch latest readings from Firebase
