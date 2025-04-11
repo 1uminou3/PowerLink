@@ -165,17 +165,6 @@ async function initializePayPal(userId) {
 
                     await db.ref(`users/${userId}/payment_history`).push().set(paymentData);
                     alert(`Payment of HK$${amount.toFixed(2)} successful!`);
-
-                    // Reset billing data in Firebase
-                    await db.ref(`users/${userId}/data`).update({
-                        'Power_Usage_(Wh)': { value: 0 },
-                        'Charge_Amount_(Wh)': { value: 0 }
-                    });
-
-                    // Refresh billing data
-                    await fetchLatestReadings(userId);
-                    document.getElementById('paypal-button').innerHTML = '';
-                    await initializePayPal(userId);
                 })
                 .catch(err => {
                     console.error('Payment error:', err);
