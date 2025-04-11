@@ -165,7 +165,6 @@ async function initializePayPal(userId) {
 
                     await db.ref(`users/${userId}/payment_history`).push().set(paymentData);
                     alert(`Payment of HK$${amount.toFixed(2)} successful!`);
-                    amount = 0;
                 })
                 .catch(err => {
                     console.error('Payment error:', err);
