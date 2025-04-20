@@ -1,11 +1,11 @@
 # Start from Path: Website/login/PowerLink.html
 
-# Google /Firebase 
-Acc: ee3070powerlink@gmail.com
+# Jason account 
+Acc: test@gmail.com
 <br>
-Pass: *powerlinkEE3070
+Pass: 12345678
 
-# PowerLink website: 
-Acc: ee3070powerlink@gmail.com
+# Jacky account: 
+Acc: 123@gmail.com
 <br>
-Pass: ee3070
+Pass: 123456
