@@ -160,7 +160,7 @@ function updateVoltageChart(data) {
                         ticks: {
                             beginAtZero: true,
                             max: 15, // Increased from 5 to 10 to accommodate higher voltage values
-                            stepSize: 1, // Changed from 0.5 to 1 for better readability
+                            stepSize: 1.5, // Changed from 0.5 to 1 for better readability
                             callback: function(value) {
                                 return value + ' V';
                             }
