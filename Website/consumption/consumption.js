@@ -224,8 +224,8 @@ function updateCurrentChart(data) {
                     yAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            max: 50,
-                            stepSize: 5,
+                            max: 200,
+                            stepSize: 10,
                             callback: function(value) {
                                 return value + ' mA';
                             }
